@@ -20,8 +20,10 @@ public class Server {
         ) {
 
             Socket socket = serverSocket.accept();
+
+            System.out.println("Connected client: " + socket.getInetAddress());
             
-            ClientHandler client = new ClientHandler(socket);
+            ClientHandler client = new ClientHandler(socket, show);
             pool.execute(client);
 
         } catch (IOException e) {

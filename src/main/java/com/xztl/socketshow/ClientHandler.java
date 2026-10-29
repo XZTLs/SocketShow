@@ -8,14 +8,17 @@ import java.net.Socket;
 public class ClientHandler implements Runnable {
 
     Socket socket;
+    Show show;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, Show show) {
         this.socket = socket;
     }
 
     @Override
     public void run() {
         
+        String command = "";
+
         try (
             BufferedReader in = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()));
@@ -23,11 +26,15 @@ public class ClientHandler implements Runnable {
             PrintWriter out = new PrintWriter(
                         socket.getOutputStream(), true);
         ) {
+
+            while (command != null && !command.equals("ESCI")) {
+                
+            }
             
         } catch (Exception e) {
-            
+            System.out.println(e.getMessage());
         }
-        
+
     }
 
 }
