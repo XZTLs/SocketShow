@@ -1,6 +1,7 @@
 package com.xztl.socketshow;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -14,10 +15,20 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
     }
 
+    private String[] getCommand(String c) throws IOException {
+        if (c.isEmpty() || c == null) throw new IOException();
+
+        String[] cmd = c.trim().split(" ");
+
+        return cmd;
+    }
+
+
+
     @Override
     public void run() {
         
-        String command = "";
+        Command cmd = new Command();
 
         try (
             BufferedReader in = new BufferedReader(
@@ -27,10 +38,18 @@ public class ClientHandler implements Runnable {
                         socket.getOutputStream(), true);
         ) {
 
-            while (command != null && !command.equals("ESCI")) {
+            try {
                 
+                while (!cmd.canExit()) {
+                
+                
+
             }
-            
+
+            } catch (IOException e) {
+                out.println("ERRORE;Sintassi non valida");
+            }
+        
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

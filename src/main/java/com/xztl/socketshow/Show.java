@@ -11,11 +11,13 @@ public class Show {
     public int getMaxSeats() { return this.MAX_SEATS; }
     public int getSeats() { return this.seats; }
     
-    public void setSeats(int seats) { this.seats = seats; }
-
-    public void increase() { this.seats += 1; }
+    // public void increase() { this.seats += 1; }
     public void increase(int n) { this.seats += n; }
 
-    public void decrease() { this.seats -= 1; }
+    // public void decrease() { this.seats -= 1; }
     public void decrease(int n) { this.seats -= n; }
+
+    // public boolean book() {
+
+    // }
 }
