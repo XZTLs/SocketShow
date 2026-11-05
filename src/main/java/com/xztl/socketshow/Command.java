@@ -1,5 +1,7 @@
 package com.xztl.socketshow;
 
+import java.io.IOException;
+
 public class Command {
     private String cmd;
     private String val;
@@ -16,4 +18,11 @@ public class Command {
 
     public boolean canExit() { return this.cmd.equals("ESCI"); }
 
+    public String[] sanitize(String c) throws IOException {
+        if (c.isEmpty() || c == null) throw new IOException();
+
+        String[] cmd = c.trim().split(" ");
+
+        return cmd;
+    }
 }

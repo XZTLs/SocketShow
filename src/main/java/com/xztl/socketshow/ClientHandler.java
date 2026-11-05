@@ -15,16 +15,6 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
     }
 
-    private String[] getCommand(String c) throws IOException {
-        if (c.isEmpty() || c == null) throw new IOException();
-
-        String[] cmd = c.trim().split(" ");
-
-        return cmd;
-    }
-
-
-
     @Override
     public void run() {
         
@@ -42,7 +32,7 @@ public class ClientHandler implements Runnable {
                 
                 while (!cmd.canExit()) {
                 
-                
+                cmd.sanitize(in.readLine());
 
             }
 
