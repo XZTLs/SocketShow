@@ -12,22 +12,24 @@ public class Server {
 
     public Server(int port) {
 
-        System.out.println("Started server on port: " + port);
+        ExecutorService pool = Executors.newFixedThreadPool(show.getMaxSeats());
 
         try (
             ServerSocket serverSocket = new ServerSocket(port);
-            ExecutorService pool = Executors.newFixedThreadPool(show.getMaxSeats());
         ) {
+            System.out.println("Started server on port: " + port);
 
-            Socket socket = serverSocket.accept();
+            while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("Connected client: " + socket.getInetAddress());
 
-            System.out.println("Connected client: " + socket.getInetAddress());
-            
-            ClientHandler client = new ClientHandler(socket, show);
-            pool.execute(client);
-
+                ClientHandler client = new ClientHandler(socket, show);
+                pool.execute(client);
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } finally {
+            pool.shutdown();
         }
 
     }

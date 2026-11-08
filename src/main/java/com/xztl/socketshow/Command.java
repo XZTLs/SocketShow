@@ -1,8 +1,16 @@
 package com.xztl.socketshow;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Command {
+    private final Map<String, Integer> valid = new HashMap<>(Map.of(
+            "DISPONIBILI", 1,
+            "PRENOTA", 2,
+            "ANNULLA", 2,
+            "ESCI", 1
+    ));
+
     private String cmd;
     private String val;
 
@@ -16,13 +24,27 @@ public class Command {
         this.val = val;
     }
 
+    public String getCommand() { return this.cmd; }
+    public int getValue() { return Integer.parseInt(this.val); }
+
     public boolean canExit() { return this.cmd.equals("ESCI"); }
 
-    public String[] sanitize(String c) throws IOException {
-        if (c.isEmpty() || c == null) throw new IOException();
+    private String[] sanitize(String command) throws InvalidSyntaxException, InvalidQuantityException, UnrecognizedCommandException {
+        if (command == null) throw new InvalidSyntaxException();
+        if (command.isEmpty()) throw new InvalidSyntaxException();
 
-        String[] cmd = c.trim().split(" ");
+        String[] c = command.trim().split("\\s+");
+        if (!valid.containsKey(c[0])) throw new UnrecognizedCommandException();
+        if (c.length != valid.get(c[0])) throw new InvalidSyntaxException();
+        if (c.length == 2) try { Integer.parseInt(c[1]); } catch(Exception e) { throw new InvalidQuantityException(); }
 
-        return cmd;
+        return c;
+    }
+
+    public void insert(String command) throws InvalidSyntaxException, UnrecognizedCommandException, InvalidQuantityException {
+        String[] c = sanitize(command);
+
+        this.cmd = c[0];
+        this.val = (c.length > 1) ? c[1] : "";
     }
 }
